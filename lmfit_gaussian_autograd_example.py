@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
-import numpy as np
+# import numpy as np
+from autograd import numpy as np
+from autograd import elementwise_grad
 
 from lmfit import Minimizer, Parameters
 
@@ -19,15 +21,15 @@ def func(pars, x, data=None):
     return model - data
 
 
-def dfunc(pars, x, data=None):
-    a, b, c = pars['a'], pars['b'], pars['c']
-    v = np.exp(-b*x)
-    return np.array([v, -a*x*v, np.ones(len(x))])
+# def dfunc(pars, x, data=None):
+#     a, b, c = pars['a'], pars['b'], pars['c']
+#     v = np.exp(-b*x)
+#     return np.array([v, -a*x*v, np.ones(len(x))])
 
 
 def f(var, x):
     return var[0] * np.exp(-var[1]*x) + var[2]
-
+df = elementwise_grad(f)
 
 params1 = Parameters()
 params1.add('a', value=10)
